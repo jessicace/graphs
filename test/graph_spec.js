@@ -1,9 +1,9 @@
 import { expect } from 'chai';
-import { Graph } from '../Graph';
+import Graph from '../Graph';
 
-let graph = new Graph();
+let graph = new Graph;
 const nodes = [ 'A', 'B', 'C', 'D', 'E' ];
-for (let node in nodes) {
+for (let node of nodes) {
   graph.addNode(node);
 }
 
@@ -33,7 +33,8 @@ describe('Graph', () => {
 
   describe('calculateEdgeWeight', () => {
     it('totals the weights of edges based on node input', () => {
-      
+      const totalEdgeWeight = graph.calculateEdgeWeight(['A', 'B', 'C']);
+      expect(totalEdgeWeight).to.equal(9);
     });
   });
 });
