@@ -1,4 +1,4 @@
-export default class Graph {
+class Graph {
   constructor(nodes = []) {
     this.nodes = nodes;
     this.adjacencyList = new Map();
@@ -16,13 +16,17 @@ export default class Graph {
   }
 
   toString() {
+    var string = '';
     for (let node of this.nodes) {
-      let string = '';
       string += `${node} => `;
-      let adjacentNodes = this.adjacencyList.get(this.nodes[i]);
+      let adjacentNodes = this.adjacencyList.get(node);
       for (let adjacentNode of adjacentNodes) {
-        string += `adjacentNode`;
+        string += `${adjacentNode[0]}(${adjacentNode[1]}) `;
       }
+      string += '\n';
     }
+    return string;
   }
 }
+
+export default Graph;
