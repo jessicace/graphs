@@ -78,16 +78,16 @@ describe('Graph', () => {
     });
   });
 
- describe('startEndMaximumStops', () => {
+ describe('totalPaths', () => {
     it('gives the number of trips that start at the start node, end at the end node', () => {
-      const numberOfTrips = graph.startEndMaximumStops('C', 'C', 3);
+      const numberOfTrips = graph.totalPaths('C', 'C', 3);
       expect(numberOfTrips).to.equal(2);
     });
   });
 
-  describe('startEndExactStops', () => {
+  describe('totalPathsExactLength', () => {
     it('gives the number of trips that start at the start node, end at the end node, and have x stops', () => {
-      const numberOfTrips = graph.startEndExactStops('A', 'C', 4);
+      const numberOfTrips = graph.totalPathsExactLength('A', 'C', 4);
       expect(numberOfTrips).to.equal(3);
     });
   });
