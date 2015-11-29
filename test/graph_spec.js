@@ -17,7 +17,6 @@ graph.addEdge('C', 'E', 2);
 graph.addEdge('E', 'B', 3);
 graph.addEdge('A', 'E', 7);
 
-
 describe('Graph', () => {
 
   describe('findNode', () => {
