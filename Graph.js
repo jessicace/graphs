@@ -1,4 +1,5 @@
 class Graph {
+  
   constructor(nodes = []) {
     this.nodes = nodes;
     this.adjacencyList = new Map();
@@ -41,7 +42,7 @@ class Graph {
   }
 
   calculateEdgeWeight(nodes) {
-    var edgeWeight = 0;
+    let edgeWeight = 0;
     for (let i = 0; i < nodes.length - 1; i++) {
       let edge = this.findEdge(nodes[i], nodes[i + 1]);
       if (edge === 'NO SUCH ROUTE') { return edge; }

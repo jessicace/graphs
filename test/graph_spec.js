@@ -26,7 +26,7 @@ describe('Graph', () => {
       expect(nodeFound).to.equal('A');
     });
     
-    it('does not return a value when no node is found', () => {
+    it('returns null when no node is found', () => {
       const nodeFound = graph.findNode('Z');
       expect(nodeFound).to.equal(null);
     });
@@ -99,7 +99,7 @@ describe('Graph', () => {
     });
 
     it('calculates the shortest route length from one node back to itself', () => {
-      const shortestRouteLength = graph.shortestDistanceSearch('B', 'B');
+      const shortestRouteLength = graph.shortestDistance('B', 'B');
       expect(shortestRouteLength).to.equal(9);
     });
   });
@@ -107,7 +107,6 @@ describe('Graph', () => {
   describe('totalWeightedPaths', () => {
     it('gives the number of different routes from C to C with a distance of less than 30', () => {
       const totalRoutes = graph.totalWeightedPaths('C', 'C', '30');
-      console.log(totalRoutes);
       expect(totalRoutes).to.equal(7);
     });
     
