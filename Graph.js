@@ -89,49 +89,6 @@ class Graph {
     return distance[endNode];
   }
 
-  shortestDistancesSearch(startNode) {
-    const NOT_DISCOVERED = -1,
-          DISCOVERED = 0,
-          EXPLORED = 1;
-    // Keeps track of nodes visited
-    let status = [],
-        distance = [],
-        pred = [];
-    var queue = new Queue();
-    queue.enqueue(startNode);
-    
-
-    for (let node of this.nodes) {
-      distance[node] = 0;
-      pred[node] = null;
-      status[node] = NOT_DISCOVERED;
-    }
-
-    
-    while (!queue.isEmpty()) {
-      console.log(queue);
-      let activeNode = queue.dequeue();
-      const adjacentNodes = this.adjacencyList.get(activeNode);
-      // status[activeNode] = DISCOVERED;
-      console.log('Active node: ' + activeNode);
-      for (let adjacentNode of adjacentNodes) {
-        console.log('adjacentNode: ' + adjacentNode);
-        if (status[adjacentNode[0]] === NOT_DISCOVERED) {
-          console.log('discovered: ' + adjacentNode[0]);
-          status[adjacentNode[0]] = DISCOVERED;
-          distance[adjacentNode[0]] = distance[activeNode] + adjacentNode[1];
-          pred[adjacentNode[0]] = activeNode;
-          queue.enqueue(adjacentNode[0]);
-        }
-      }
-    }
-    
-    return {
-      distances: distance,
-      predecessors: pred
-    };
-  }
-
   totalPaths(startNode, endNode, maximum = 10) {
     var paths = [];
     var adjacencyList = this.adjacencyList;
