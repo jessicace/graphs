@@ -1,5 +1,3 @@
-import Queue from './Queue';
-
 class Graph {
   constructor(nodes = []) {
     this.nodes = nodes;
@@ -52,41 +50,34 @@ class Graph {
     return edgeWeight;
   }
 
-  shortestDistanceSearch(startNode, endNode) {
-    const NOT_DISCOVERED = -1,
-          DISCOVERED = 0,
-          EXPLORED = 1;
-    // Keeps track of nodes visited
-    let status = [],
-        distance = [],
-        pred = [];
-    var queue = new Queue();
-    queue.enqueue(startNode);
-    
+  shortestDistance(startNode, endNode) {
+    const NOT_DISCOVERED = 0,
+          DISCOVERED = 1;
 
+    let status = [],
+        shortestDistances = [],
+        queue = [];
+    
+    queue.push(startNode);
+    
     for (let node of this.nodes) {
-      distance[node] = 0;
-      pred[node] = null;
+      shortestDistances[node] = null;
       status[node] = NOT_DISCOVERED;
     }
 
-    
-    while (!queue.isEmpty()) {
-      let activeNode = queue.dequeue();
-      const adjacentNodes = this.adjacencyList.get(activeNode);
-      // status[activeNode] = DISCOVERED;
+    while (queue.length > 0) {
+      let activeNode = queue.shift();
+      let adjacentNodes = this.adjacencyList.get(activeNode);
       for (let adjacentNode of adjacentNodes) {
         if (status[adjacentNode[0]] === NOT_DISCOVERED) {
           status[adjacentNode[0]] = DISCOVERED;
-          distance[adjacentNode[0]] = distance[activeNode] + adjacentNode[1];
-          pred[adjacentNode[0]] = activeNode;
-          queue.enqueue(adjacentNode[0]);
+          shortestDistances[adjacentNode[0]] = shortestDistances[activeNode] + adjacentNode[1];
+          queue.push(adjacentNode[0]);
         }
       }
-      // status[activeNode] = EXPLORED;
     }
     
-    return distance[endNode];
+    return shortestDistances[endNode];
   }
 
   totalPaths(startNode, endNode, maximum = 10) {
@@ -181,4 +172,4 @@ graph.addEdge('C', 'E', 2);
 graph.addEdge('E', 'B', 3);
 graph.addEdge('A', 'E', 7);
 
-console.log(graph.totalPathsExactLength('A', 'C', 4));
+console.log(graph.shortestDistance('A', 'C'));

@@ -78,7 +78,7 @@ describe('Graph', () => {
     });
   });
 
- describe('totalPaths', () => {
+  describe('totalPaths', () => {
     it('gives the number of trips that start at the start node, end at the end node', () => {
       const numberOfTrips = graph.totalPaths('C', 'C', 3);
       expect(numberOfTrips).to.equal(2);
@@ -92,9 +92,9 @@ describe('Graph', () => {
     });
   });
 
-   describe('shortestDistanceSearch', () => {
+  describe('shortestDistance', () => {
     it('calculates the shortest length between two nodes', () => {
-      const shortestRouteLength = graph.shortestDistanceSearch('A', 'C');
+      const shortestRouteLength = graph.shortestDistance('A', 'C');
       expect(shortestRouteLength).to.equal(9);
     });
 
