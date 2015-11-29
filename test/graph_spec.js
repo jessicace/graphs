@@ -32,25 +32,6 @@ describe('Graph', () => {
     });
   });
 
-  describe('findAdjacentNodes', () => {
-    it('returns an array of nodes that are adjacent to the input', () => {
-      const adjacentNodes = graph.findAdjacentNodes('A');
-      expect(adjacentNodes).to.equal([[ 'B', 5 ], [ 'D', 5 ], [ 'E', 7 ]]);
-    });
-  });
-
-  describe('findEdge', () => {
-    it('returns the requested node of... the requested node', () => {
-      const edge = graph.findEdge('A', 'B');
-      expect(edge).to.equal([ 'B', 5 ]);
-    });
-
-    it('returns NO SUCH ROUTE if the edge does not exist', () => {
-      const edge = graph.findEdge('A', 'C');
-      expect(edge).to.equal('NO SUCH ROUTE');
-    });
-  });
-  
   describe('calculateEdgeWeight', () => {
     it('totals the weights of 2 edges based on node input', () => {
       const totalEdgeWeight = graph.calculateEdgeWeight(['A', 'B', 'C']);
@@ -72,9 +53,9 @@ describe('Graph', () => {
       expect(totalEdgeWeight).to.equal(22);
     });
 
-    it('returns "NO SUCH ROUTE" if the route does not exist', () => {
+    it('returns null if the route does not exist', () => {
       const returnValue = graph.calculateEdgeWeight(['A', 'E', 'D']);
-      expect(returnValue).to.equal('NO SUCH ROUTE');
+      expect(returnValue).to.equal(null);
     });
   });
 
@@ -92,14 +73,14 @@ describe('Graph', () => {
     });
   });
 
-  describe('shortestDistance', () => {
-    it('calculates the shortest length between two nodes', () => {
-      const shortestRouteLength = graph.shortestDistance('A', 'C');
+  describe('lowestWeightedPath', () => {
+    it('calculates the lowest weighted path between two nodes', () => {
+      const shortestRouteLength = graph.lowestWeightedPath('A', 'C');
       expect(shortestRouteLength).to.equal(9);
     });
 
     it('calculates the shortest route length from one node back to itself', () => {
-      const shortestRouteLength = graph.shortestDistance('B', 'B');
+      const shortestRouteLength = graph.lowestWeightedPath('B', 'B');
       expect(shortestRouteLength).to.equal(9);
     });
   });

@@ -1,68 +1,95 @@
 class Graph {
   
-  constructor(nodes = []) {
-    this.nodes = nodes;
+  /**
+   *  Creates a new Graph object, initialised with an empty array of nodes.
+   *  @return { Graph } graph
+   */
+  constructor() {
+    this.nodes = [];
     this.adjacencyList = new Map();
   }
-  
+
+  /**
+   *  Adds a node to the graph's node list.
+   *  Initialises node in the graph's adjacencyList with an empty array.
+   *  @param { String } node
+   */
   addNode(node) {
     this.nodes.push(node);
     this.adjacencyList.set(node, []);
   }
 
+  /**
+   *  Adds an edge with a weight between two nodes.
+   *  @param { String } startNode
+   *  @param { String } endNode
+   *  @param { Number } weight
+   */
   addEdge(startNode, endNode, weight) {
     this.adjacencyList
       .get(startNode)
       .push([endNode, weight]);
   }
 
-  findEdge(nodeName, targetNodeName) {
-    if (this.adjacencyList.has(nodeName)) {
-      return this.adjacencyList.get(nodeName).find((element, index, array) => {
-      return element[0] === targetNodeName;
-    }) || "NO SUCH ROUTE";
-    } else {
-      return "NO SUCH NODE";
-    }
+  /**
+   *  Finds existing edge based on the input of two node names.
+   *  @param { String } startNode
+   *  @param { String } endNode
+   *  @return { }
+   */
+  findEdge(startNode, endNode) {
+    return this.adjacencyList
+      .get(startNode)
+      .find((element, index, array) => {
+        return element[0] === endNode;
+      }) || null;
   }
 
-  findAdjacentNodes(nodeName) {
-    const node = this.findNode(nodeName);
-    if (node) {
-      return this.adjacencyList.get(node);
-    } else {
-      return [];
-    }
-  }
-  
-  findNode(nodeName) {
-    return this.nodes.find((element, index, array) => {
-      return element === nodeName;
-    }) || null;
+  /**
+   *  Finds existing node based on string input.
+   *  @param { String } node
+   *  @param { String } node
+   */
+  findNode(node) {
+    return this.nodes
+      .find((element, index, array) => {
+        return element === node;
+      }) || null;
   }
 
-  calculateEdgeWeight(nodes) {
+  /**
+   *  Adds the edge weights based on the given path input.
+   *  @param { Array } path
+   *  @return { Number } edgeWeight
+   */
+  calculateEdgeWeight(path) {
     let edgeWeight = 0;
-    for (let i = 0; i < nodes.length - 1; i++) {
-      let edge = this.findEdge(nodes[i], nodes[i + 1]);
-      if (edge === 'NO SUCH ROUTE') { return edge; }
+    for (let i = 0; i < path.length - 1; i++) {
+      let edge = this.findEdge(path[i], path[i + 1]);
+      if (edge === null) { return edge; }
       edgeWeight += edge[1];
     }
     return edgeWeight;
   }
 
-  shortestDistance(startNode, endNode) {
+  /**
+   *  Given two nodes, calculate the lowest weighted path. 
+   *  @param { String } startNode
+   *  @param { String } endNode
+   *  @return { Number } weight
+   */
+  lowestWeightedPath(startNode, endNode) {
     const NOT_DISCOVERED = 0,
           DISCOVERED = 1;
 
     let status = [],
-        shortestDistances = [],
+        weight = [],
         queue = [];
     
     queue.push(startNode);
     
     for (let node of this.nodes) {
-      shortestDistances[node] = null;
+      weight[node] = null;
       status[node] = NOT_DISCOVERED;
     }
 
@@ -72,16 +99,26 @@ class Graph {
       for (let adjacentNode of adjacentNodes) {
         if (status[adjacentNode[0]] === NOT_DISCOVERED) {
           status[adjacentNode[0]] = DISCOVERED;
-          shortestDistances[adjacentNode[0]] = shortestDistances[activeNode] + adjacentNode[1];
+          weight[adjacentNode[0]] = weight[activeNode] + adjacentNode[1];
           queue.push(adjacentNode[0]);
         }
       }
     }
     
-    return shortestDistances[endNode];
+    return weight[endNode];
   }
 
-  totalPaths(startNode, endNode, maximum = 10) {
+  /**
+   *  Given a start node and an end node, return the total number of paths
+   *  less than or equal to the given size.
+   *  Maximum path length given to prevent exceeding maximum stack size.
+   *  @param { String } startNode
+   *  @param { String } endNode
+   *  @param { Number } maximumEdgeQuantity
+   *  @return { Number } 
+   *  
+   */
+  totalPaths(startNode, endNode, maximumEdgeQuantity = 10) {
     var paths = [];
     var adjacencyList = this.adjacencyList;
     
@@ -92,7 +129,7 @@ class Graph {
       let adjacentNodes = adjacencyList.get(activeNode);
       for (let adjacentNode of adjacentNodes) {
         let currentPath = stops + adjacentNode[0];
-        if (stops.length < maximum + 1) {
+        if (stops.length < maximumEdgeQuantity + 1) {
           if (adjacentNode[0].endsWith(endNode)) {
             paths.push(currentPath);
           }
@@ -104,7 +141,16 @@ class Graph {
     return paths.length;
   }
 
-  totalPathsExactLength(startNode, endNode, exactLength) {
+  /**
+   *  Given a start node and an end node, return the total number of paths
+   *  of the given size.
+   *  @param { String } startNode
+   *  @param { String } endNode
+   *  @param { Number } edgeQuantity
+   *  @return { Number } 
+   *  
+   */
+  totalPathsExactLength(startNode, endNode, edgeQuantity) {
     var paths = [];
     var adjacencyList = this.adjacencyList;
     
@@ -115,9 +161,9 @@ class Graph {
       let adjacentNodes = adjacencyList.get(activeNode);
       for (let adjacentNode of adjacentNodes) {
         let currentPath = stops + adjacentNode[0];
-        if (stops.length <= exactLength + 1) {
+        if (stops.length <= edgeQuantity + 1) {
           if (adjacentNode[0].endsWith(endNode) &&
-              currentPath.length === exactLength + 1) {
+              currentPath.length === edgeQuantity + 1) {
             paths.push(currentPath);
           }
           exploreNode(adjacentNode[0], currentPath);
@@ -128,8 +174,16 @@ class Graph {
     return paths.length;
   }
 
-
-  totalWeightedPaths(startNode, endNode, maximumDistance = 30) {
+  /**
+   *  Given a start node and an end node, return the total number of paths
+   *  less than accumulative edge weights.
+   *  @param { String } startNode
+   *  @param { String } endNode
+   *  @param { Number } maximumEdgeWeight
+   *  @return { Number } 
+   *  
+   */
+  totalWeightedPaths(startNode, endNode, maximumEdgeWeight = 30) {
     var paths = [];
     var adjacencyList = this.adjacencyList;
 
@@ -141,7 +195,7 @@ class Graph {
       for (let adjacentNode of adjacentNodes) {
         let currentPath = stops + adjacentNode[0];
         let currentDistance = distance + adjacentNode[1];
-        if (currentDistance < maximumDistance) {
+        if (currentDistance < maximumEdgeWeight) {
           if (adjacentNode[0].endsWith(endNode)) {
             paths.push([currentPath, currentDistance]);
           }
@@ -156,21 +210,3 @@ class Graph {
 }
 
 export default Graph;
-
-let graph = new Graph;
-const nodes = [ 'A', 'B', 'C', 'D', 'E' ];
-for (let node of nodes) {
-  graph.addNode(node);
-}
-
-graph.addEdge('A', 'B', 5);
-graph.addEdge('B', 'C', 4);
-graph.addEdge('C', 'D', 8);
-graph.addEdge('D', 'C', 8);
-graph.addEdge('D', 'E', 6);
-graph.addEdge('A', 'D', 5);
-graph.addEdge('C', 'E', 2);
-graph.addEdge('E', 'B', 3);
-graph.addEdge('A', 'E', 7);
-
-console.log(graph.shortestDistance('A', 'C'));
