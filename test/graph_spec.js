@@ -104,9 +104,9 @@ describe('Graph', () => {
     });
   });
 
-  describe('totalRoutesLessThanDistance', () => {
+  describe('totalWeightedPaths', () => {
     it('gives the number of different routes from C to C with a distance of less than 30', () => {
-      const totalRoutes = graph.totalRoutesLessThanDistance('C', 'C', '30');
+      const totalRoutes = graph.totalWeightedPaths('C', 'C', '30');
       console.log(totalRoutes);
       expect(totalRoutes).to.equal(7);
     });

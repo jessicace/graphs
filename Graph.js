@@ -189,50 +189,47 @@ class Graph {
     return filteredPaths.length;
   }
 
-  weightedPaths(maximumDistance = 30) {
-    const NOT_DISCOVERED = -1,
-          DISCOVERED = 0,
-          EXPLORED = 1;
-
+  totalWeightedPaths(startNode, endNode, maximumDistance = 30) {
     var paths = [];
-    var status = [];
     var adjacencyList = this.adjacencyList;
 
+    exploreNode(startNode, startNode);
     
-    // Keeps track of nodes visited
-    for (let node of this.nodes) {
-      for (let node of this.nodes) {
-        status[node] = NOT_DISCOVERED;
-      }
-      exploreNode(node, node, node, 0);
-      
-    }
-
-    function exploreNode(parentNode, activeNode, stops, distance) {
+    function exploreNode(activeNode, stops, distance = 0) {
       let adjacentNodes = adjacencyList.get(activeNode);
       for (let adjacentNode of adjacentNodes) {
         let currentPath = stops + adjacentNode[0];
         let currentDistance = distance + adjacentNode[1];
-        paths.push([currentPath, currentDistance]);
-        if (status[adjacentNode[0]] === NOT_DISCOVERED || distance < maximumDistance) {
-          status[adjacentNode[0]] = DISCOVERED;
-          exploreNode(parentNode, adjacentNode[0], currentPath, currentDistance);
-          status[adjacentNode[0]] = NOT_DISCOVERED;
+        if (currentDistance < maximumDistance) {
+          if (adjacentNode[0].endsWith(endNode)) {
+            paths.push([currentPath, currentDistance]);
+          }
+          exploreNode(adjacentNode[0], currentPath, currentDistance);
         }
       }
     }
     
-    return paths;
-  }
-
-  totalRoutesLessThanDistance(startNode, endNode, maximum) {
-    return this.weightedPaths().filter((element, index, array) => {
-      return element[0].startsWith(startNode) &&
-        element[0].endsWith(endNode) &&
-        element[1] < maximum;
-    }).length;
+    return paths.length;
   }
   
 }
 
 export default Graph;
+
+let graph = new Graph;
+const nodes = [ 'A', 'B', 'C', 'D', 'E' ];
+for (let node of nodes) {
+  graph.addNode(node);
+}
+
+graph.addEdge('A', 'B', 5);
+graph.addEdge('B', 'C', 4);
+graph.addEdge('C', 'D', 8);
+graph.addEdge('D', 'C', 8);
+graph.addEdge('D', 'E', 6);
+graph.addEdge('A', 'D', 5);
+graph.addEdge('C', 'E', 2);
+graph.addEdge('E', 'B', 3);
+graph.addEdge('A', 'E', 7);
+
+
