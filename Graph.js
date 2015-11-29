@@ -58,14 +58,14 @@ class Graph {
   }
 
   /**
-   *  Adds the edge weights based on the given path input.
-   *  @param { Array } path
+   *  Adds the edge weights based on nodes passed in.
+   *  @param { String } nodes
    *  @return { Number } edgeWeight
    */
-  calculateEdgeWeight(path) {
+  totalEdgeWeight(...nodes) {
     let edgeWeight = 0;
-    for (let i = 0; i < path.length - 1; i++) {
-      let edge = this.findEdge(path[i], path[i + 1]);
+    for (let i = 0; i < nodes.length - 1; i++) {
+      let edge = this.findEdge(nodes[i], nodes[i + 1]);
       if (edge === null) { return edge; }
       edgeWeight += edge[1];
     }

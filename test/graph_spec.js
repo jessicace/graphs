@@ -32,29 +32,29 @@ describe('Graph', () => {
     });
   });
 
-  describe('calculateEdgeWeight', () => {
+  describe('totalEdgeWeight', () => {
     it('totals the weights of 2 edges based on node input', () => {
-      const totalEdgeWeight = graph.calculateEdgeWeight(['A', 'B', 'C']);
+      const totalEdgeWeight = graph.totalEdgeWeight('A', 'B', 'C');
       expect(totalEdgeWeight).to.equal(9);
     });
 
     it('gets the weight of 1 edge based on node input', () => {
-      const totalEdgeWeight = graph.calculateEdgeWeight(['A', 'D']);
+      const totalEdgeWeight = graph.totalEdgeWeight('A', 'D');
       expect(totalEdgeWeight).to.equal(5);
     });
 
     it('totals the distance of route A-D-C', () => {
-      const totalEdgeWeight = graph.calculateEdgeWeight(['A', 'D', 'C']);
+      const totalEdgeWeight = graph.totalEdgeWeight('A', 'D', 'C');
       expect(totalEdgeWeight).to.equal(13);
     });
     
     it('calculates the distance of 4 edges', () => {
-      const totalEdgeWeight = graph.calculateEdgeWeight(['A', 'E', 'B', 'C', 'D']);
+      const totalEdgeWeight = graph.totalEdgeWeight('A', 'E', 'B', 'C', 'D');
       expect(totalEdgeWeight).to.equal(22);
     });
 
     it('returns null if the route does not exist', () => {
-      const returnValue = graph.calculateEdgeWeight(['A', 'E', 'D']);
+      const returnValue = graph.totalEdgeWeight('A', 'E', 'D');
       expect(returnValue).to.equal(null);
     });
   });
